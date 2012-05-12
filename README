@@ -1,0 +1,44 @@
+Project: code9 [A robot based on kinect]
+----------------------------------------
+
+src/main.cpp: the main application
+src/testApp.cpp: the testApp class of openframeworks
+src/testApp.h: the header class of openframeworks
+
+
+src/morph.hpp: the morphological processing library
+morph_test.cpp: it contains the test code[on GTEST Framework] for testing the functions of morph.hpp
+morph_test_compile.sh: it compiles the morph_test.cpp 
+
+src/depth_lib.hpp: the depth processing library
+depth_lib_test.cpp: it contains test code for testing functions of depth_lib.hpp
+depth_test_compile.sh : it compiles the depth_lib_test.cpp
+
+cv_util.hpp: it contains opencv utilities
+img_assert.hpp: it contains code to assert equality of two images on [GTEST]
+
+Build instructions:
+-------------------
+install
+1.openframewokrs 
+2.libfeenect 
+3.ofxKinect
+3.Google_Testing_Framework
+
+download this project
+go to place where you have extracted openframeworks
+go to apps directory
+create myapps directory under apps
+create code9 directory under myapps
+extract the zip of this project in code9 directory
+
+go to terminal
+change the directory to code9
+type the following command
+make
+
+if compilation is done then
+cd bin
+./code9
+
+

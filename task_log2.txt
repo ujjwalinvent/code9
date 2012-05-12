@@ -1,0 +1,34 @@
+1.install Remote Control System for bot : not done
+2.test the remote control system: not done
+3.test the working of all sevo motors: done
+4.synchronize two sevo motors: done
+5.make circuit for gripper motor: done
+6.test the working of dc motors: done
+7.make routines to move the dc motors: done
+8.test working of routines of dc motors: done
+9.connect the kinect to a battery: not done
+10.make circuitry for kinect power supply: not done
+11.Purchase a 12v battery for kinect power supply: not done
+12.Change the configuration of robot arm: not done
+13.attach one more floor in between two floors: not done
+14.install a switch to start and stop the bot: not done
+15.make algorithm for dynamic thresholding range: not done
+16.test hit or miss transform on captured images of glass on table: not done
+17.test hit or miss transform on depth video: not done
+18.test on data which does not contain a table and glass: not done
+19.test the accuracy of morphological algorithms on video and image: not done
+20.make a metric to judge the accuracy[some kind of table will work]: not done
+21.test the morphological processing functions for time complexity: not done
+22.optimize morphological processing functions using openmp: not done
+23.test the time complexity using openmp: not done
+24.test the accuracy on tagged* image and video data: not done
+25.make github repository for project: done
+26.push entire project on github: done
+27.perodically push the entire project on github: done
+28.Create a documentation using doxygen: not done
+29.Create the arduino file to be burned on arduino: not done
+30.Merge the morph and ofcode9: not done
+
+*tagged: means data which is tagged by person for the presence of object.
+
+

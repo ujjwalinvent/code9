@@ -1,0 +1,42 @@
+Modules :
+Libfreenect: used to access kinect hardware
+openframeorks: An architecture for doing the processing of kinect frames
+cv_util.hpp : opencv utilities.
+morph.hpp : morphologoical processing library.
+depth_lib.hpp : for processing the depth information 
+functions for thresholding 
+functions for processing the depth 
+functions for storing the depth info 
+functions for reading the depth info
+
+
+
+algorithm
+setup()
+{
+	init kinect.
+	create the structuring elements B1 and B2 for hit or miss
+}
+
+update()
+{
+
+grab a depth frame from kinect
+do_thresh(near,far) on depth frame
+dilate the depth frame.
+do_hit_or_miss(B1,B2) 
+dilate the depth frame.
+run find countour on depth frame.
+find the centroids
+get the depth in meters of the centroids.
+}
+
+
+draw()
+{
+draw the raw depth frame
+draw the dilated depth frame
+draw the depth after hit or miss
+draw the depth after dilation 
+draw the contours on the dilated depth frame.
+}
