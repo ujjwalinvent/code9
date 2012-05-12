@@ -1,9 +1,9 @@
 #include <Servo.h>
 
-#define PAN_MAX 180
-#define PAN_MIN 0
-#define TILT_MAX 140
-#define TILT_MIN 34
+#define PAN_MAX 180 //the maximum pan angle
+#define PAN_MIN 0 //the minimum pan angle
+#define TILT_MAX 140 //the maximum tilt angle
+#define TILT_MIN 34 //the minimum tilt angle
 
 int left_bit1 = 22;
 int left_bit2 = 24;
@@ -14,15 +14,15 @@ int right_speed = 8;
 
 int grip_bit1 = 30;
 int grip_bit2 = 32;
-int grip_speed = 5;
+int grip_speed = 4;
 
 
 
 Servo leftServo; // left servo motor
 Servo rightServo; // right servo motor
 Servo centerServo; //center servo motor
-int tilt_angle= 34; // variable to store the servo position
-int pan_angle = 90;
+int tilt_angle= 34; // current tilt angle
+int pan_angle = 90; //current pan angle
 int val=0;
 
 void left_motor_forward(int s)
@@ -67,7 +67,7 @@ void gripper_motor_backward(int s)
   analogWrite(grip_speed,s);
 }
 
-void stop()
+void stop_bot()
 {
   left_motor_forward(0);
   right_motor_forward(0);
@@ -200,9 +200,12 @@ void setup()
   pinMode(grip_speed,OUTPUT);
 
 
-  leftServo.attach(7); // attaches left servo on pin 9 to servo object
-  rightServo.attach(6); // attaches right servo on pin 10 to servo object
-  centerServo.attach(5);
+  leftServo.attach(7); // attaches left servo on pin 7 to servo object
+  rightServo.attach(6); // attaches right servo on pin 6 to servo object
+  centerServo.attach(5); //attaches center servo on pin 5 to servo object
+  leftServo.write(tilt_angle); // rotate servo at speed given by 'tilt_angle'  
+  rightServo.write(180-tilt_angle); // go in the opposite direction
+  centerServo.write(pan_angle);
   Serial.begin(9600);   
 
 }
