@@ -1,3 +1,13 @@
+/*
+observation 
+changes
+dilation with 5 by 5 window
+need to accurately balance far threshold with respect to depth
+or we can decrease the depth until we find the glass a kind of auto scan algorithm
+architecture change
+make a struct for structuring element
+and we put the pivot with the structuring element only
+*/
 #include "testApp.h"
 #include <fstream>
 #include "depth_lib.hpp"
@@ -23,15 +33,16 @@ void testApp::setup() {
 	colorImg.allocate(kinect.width, kinect.height);
 	grayImage.allocate(kinect.width, kinect.height);
 	grayImage2.allocate(kinect.width/2,kinect.height/2);
-	dil_se.allocate(3,3);
+	dil_se.allocate(5,5);
 	out_img.allocate(kinect.width/2,kinect.height/2);
 	out_img_e.allocate(kinect.width/2,kinect.height/2);	
-	SIZE = 50;
-	se1.allocate(SIZE,SIZE); //structuring element b1
-	se2.allocate(SIZE,SIZE); //structuring element b2
+	SE_WIDTH = 40;
+	SE_HEIGHT = 40;
+	se1.allocate(SE_WIDTH,SE_HEIGHT); //structuring element b1
+	se2.allocate(SE_WIDTH,SE_HEIGHT); //structuring element b2
 	
-	nearThreshold = 226;
-	farThreshold = 210;
+	nearThreshold = 255;
+	farThreshold = 0;
 	bThreshWithOpenCV = true;
 	ofSetFrameRate(30);
 
@@ -42,8 +53,8 @@ void testApp::setup() {
 	// start from the front
 	bDrawPointCloud = false;
 	dil_se.set(255);
-	make_structuring_element_b1(se1.getCvImage(),1,20,0);
-	make_structuring_element_b2(se2.getCvImage(),1,1,0);
+	make_structuring_element_b1(se1.getCvImage(),1,20,1);
+	make_structuring_element_b2(se2.getCvImage(),1,1,5);
 }
 
 //--------------------------------------------------------------
@@ -60,8 +71,8 @@ void testApp::update() {
 		cvResize(grayImage.getCvImage(),grayImage2.getCvImage());
 	//	grayImage.dilate_3x3();
 		depth_threshold(grayImage2.getCvImage(),nearThreshold,farThreshold);
-		dilate(grayImage2.getCvImage(),dil_se.getCvImage(),1,1,out_img.getCvImage());
-		//hit_or_miss2(out_img.getCvImage(),se1.getCvImage(),se2.getCvImage(),SIZE/2,SIZE/2,out_img_e.getCvImage());
+		dilate(grayImage2.getCvImage(),dil_se.getCvImage(),2,2,out_img.getCvImage());
+		hit_or_miss2(out_img.getCvImage(),se1.getCvImage(),se2.getCvImage(),SE_HEIGHT/2,SE_WIDTH/2,out_img_e.getCvImage());
 		//erode(out_img.getCvImage(),se1.getCvImage(),SIZE/2,SIZE/2,out_img_e.getCvImage());
 		grayImage.flagImageChanged();
 		grayImage2.flagImageChanged();	
@@ -70,7 +81,7 @@ void testApp::update() {
 		
 		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
 		// also, find holes is set to true so we will get interior contours as well....
-		contourFinder.findContours(out_img_e, 10,30*30,1, false);
+		contourFinder.findContours(out_img_e, 0,30*30,1, false);
 		
 	}
 
@@ -97,7 +108,7 @@ void testApp::draw() {
 
 		kinect.draw     (0,240,320,240);
 		se1.draw(320,240);
-		se2.draw(320+SIZE,240);
+		se2.draw(320+SE_WIDTH,240);
 		
 		//out_img_e.draw(640, 0, 640, 480);
 //		contourFinder.draw(640, 0, 640, 480);
@@ -152,6 +163,7 @@ void testApp::exit() {
 	kinect.close();
 }
 
+/*
 void testApp::keyPressed(int key)
 {
 	switch(key)
@@ -170,8 +182,8 @@ void testApp::keyPressed(int key)
 		default : serial.writeByte(STOP);     break;
 	}
 }
+*/
 
-/*
 void testApp::keyPressed (int key) {
 	switch (key) {
 		case ' ':
@@ -232,7 +244,7 @@ void testApp::keyPressed (int key) {
 			break;
 	}
 }
-*/
+
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button)
 {}

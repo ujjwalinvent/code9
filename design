@@ -1,3 +1,9 @@
+I will plot a graph between farthreshold and depth 
+using this graph I will determine the relationship between  depth and farthreshold
+then farthreshold can be varied accordingly.
+but intially I need to we need to increase the farthreshold until we detect glass 
+for the first time.
+
 Modules :
 Libfreenect: used to access kinect hardware
 openframeorks: An architecture for doing the processing of kinect frames
@@ -16,6 +22,7 @@ setup()
 {
 	init kinect.
 	create the structuring elements B1 and B2 for hit or miss
+	setup connection to arduino.
 }
 
 update()
@@ -25,10 +32,35 @@ grab a depth frame from kinect
 do_thresh(near,far) on depth frame
 dilate the depth frame.
 do_hit_or_miss(B1,B2) 
-dilate the depth frame.
+//dilate the depth frame.
 run find countour on depth frame.
 find the centroids
 get the depth in meters of the centroids.
+
+if(MOVE_ROBOT_MODULE_ON)
+{
+if(glass is detected && glass_depth>threshold)
+	//code to adjust the bot at the center.
+	if(glass is at center)
+		send forward command.
+	if (glass is at left)
+		send left command.
+	if (glass is at right)
+		send right command.
+
+	set report string to glass detected
+	adjust farThreshold according to glass_depth [need caliberation]
+if(glass is not detected)
+	//run rotate360 function.
+	send left command.
+	send stop bot command.
+	set report string to glass not detected
+if(glass is detected && glass_depth<threshold)
+	stop bot command
+	run Grab module wait for the grab module to finish.
+	set report string to glass detected && depth<threshold;
+}
+
 }
 
 
@@ -37,9 +69,15 @@ draw()
 draw the raw depth frame
 draw the dilated depth frame
 draw the depth after hit or miss
-draw the depth after dilation 
-draw the contours on the dilated depth frame.
+draw the contours on the output depth frame.
+}
+
+keypress(key)
+{
+	if(key = M) then toggle MOVE_ROBOT_MODULE_ON;
 }
 
 
-find glass
+
+
+

@@ -40,7 +40,8 @@ public:
 	int nearThreshold;
 	int farThreshold;
 	int angle;
-	int SIZE;
+	int SE_WIDTH;
+	int SE_HEIGHT;
 	enum {STOP = 0, 
 		FORWARD = 1, 
 		BACKWARD = 2, 

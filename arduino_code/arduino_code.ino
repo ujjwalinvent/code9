@@ -4,7 +4,10 @@
 #define PAN_MIN 0 //the minimum pan angle
 #define TILT_MAX 140 //the maximum tilt angle
 #define TILT_MIN 34 //the minimum tilt angle
-
+#define FORWARD_SPEED 150
+#define BACKWARD_SPEED 150
+#define LEFT_SPEED 150
+#define RIGHT_SPEED 150
 
 int left_bit1 = 28;//22;
 int left_bit2 = 26;//24;
@@ -78,26 +81,26 @@ void stop_bot()
 
 void forward()
 {
-  left_motor_forward(255);
-  right_motor_forward(255);
+  left_motor_forward(FORWARD_SPEED);
+  right_motor_forward(FORWARD_SPEED);
 }
 
 void backward()
 {
-  left_motor_backward(255);
-  right_motor_backward(255);
+  left_motor_backward(BACKWARD_SPEED);
+  right_motor_backward(BACKWARD_SPEED);
 }
 
 void left()
 {
-  left_motor_backward(255);
-  right_motor_forward(255);
+  left_motor_backward(LEFT_SPEED);
+  right_motor_forward(LEFT_SPEED);
 }
 
 void right()
 {
-  left_motor_forward(255);
-  right_motor_backward(255);  
+  left_motor_forward(RIGHT_SPEED);
+  right_motor_backward(RIGHT_SPEED);  
 }
 
 //TODO 
