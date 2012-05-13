@@ -32,6 +32,8 @@ public:
 	ofxCvGrayscaleImage se2;
 
 	ofxCvContourFinder contourFinder;
+	
+	ofSerial serial; //serial object of interfacing with arduino
 
 	bool bThreshWithOpenCV;
 	bool bDrawPointCloud;
@@ -39,6 +41,18 @@ public:
 	int farThreshold;
 	int angle;
 	int SIZE;
+	enum {STOP = 0, 
+		FORWARD = 1, 
+		BACKWARD = 2, 
+		LEFT = 3, 
+		RIGHT = 4, 
+		TILT_UP = 5, 
+		TILT_DOWN = 6,
+		PAN_LEFT = 7,
+		PAN_RIGHT = 8,
+		OPEN_GRIPPER = 9,
+		CLOSE_GRIPPER=10,
+		RESET_ARM =11};
 	// used for viewing the point cloud
 	ofEasyCam easyCam;
 };

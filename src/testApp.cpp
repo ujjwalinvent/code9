@@ -13,9 +13,12 @@ void testApp::setup() {
 
 	kinect.init();
 	//kinect.init(true); // shows infrared instead of RGB video image
-//	kinect.init(false, false); // disable video image (faster fps)
+    //kinect.init(false, false); // disable video image (faster fps)
 	kinect.open();
 
+	//list all the serial devices.
+	serial.enumerateDevices();
+	serial.setup("/dev/ttyACM0",9600);
 
 	colorImg.allocate(kinect.width, kinect.height);
 	grayImage.allocate(kinect.width, kinect.height);
@@ -58,7 +61,7 @@ void testApp::update() {
 	//	grayImage.dilate_3x3();
 		depth_threshold(grayImage2.getCvImage(),nearThreshold,farThreshold);
 		dilate(grayImage2.getCvImage(),dil_se.getCvImage(),1,1,out_img.getCvImage());
-		hit_or_miss2(out_img.getCvImage(),se1.getCvImage(),se2.getCvImage(),SIZE/2,SIZE/2,out_img_e.getCvImage());
+		//hit_or_miss2(out_img.getCvImage(),se1.getCvImage(),se2.getCvImage(),SIZE/2,SIZE/2,out_img_e.getCvImage());
 		//erode(out_img.getCvImage(),se1.getCvImage(),SIZE/2,SIZE/2,out_img_e.getCvImage());
 		grayImage.flagImageChanged();
 		grayImage2.flagImageChanged();	
@@ -149,6 +152,26 @@ void testApp::exit() {
 	kinect.close();
 }
 
+void testApp::keyPressed(int key)
+{
+	switch(key)
+	{
+		case 'i': serial.writeByte(FORWARD);  break;
+		case 'k': serial.writeByte(BACKWARD); break;
+		case 'j': serial.writeByte(LEFT);     break;
+		case 'l': serial.writeByte(RIGHT);    break;
+		case 'o': serial.writeByte(OPEN_GRIPPER); break;
+		case 'c': serial.writeByte(CLOSE_GRIPPER); break;
+		case 'r': serial.writeByte(RESET_ARM); break;
+		case OF_KEY_UP:    serial.writeByte(TILT_UP);   break;
+		case OF_KEY_DOWN:  serial.writeByte(TILT_DOWN); break;
+		case OF_KEY_LEFT:  serial.writeByte(PAN_LEFT);  break;
+		case OF_KEY_RIGHT: serial.writeByte(PAN_RIGHT); break;
+		default : serial.writeByte(STOP);     break;
+	}
+}
+
+/*
 void testApp::keyPressed (int key) {
 	switch (key) {
 		case ' ':
@@ -209,15 +232,14 @@ void testApp::keyPressed (int key) {
 			break;
 	}
 }
-
+*/
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button)
 {}
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button)
-{
-}
+{}
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button)

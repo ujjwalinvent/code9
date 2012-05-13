@@ -5,15 +5,18 @@
 #define TILT_MAX 140 //the maximum tilt angle
 #define TILT_MIN 34 //the minimum tilt angle
 
-int left_bit1 = 22;
-int left_bit2 = 24;
-int right_bit1 = 26;
-int right_bit2 = 28;
-int left_speed = 9;
-int right_speed = 8;
 
-int grip_bit1 = 30;
-int grip_bit2 = 32;
+int left_bit1 = 28;//22;
+int left_bit2 = 26;//24;
+
+int right_bit1 = 24;//26;
+int right_bit2 = 22;//28;
+
+int left_speed = 8;
+int right_speed = 9;
+
+int grip_bit1 = 3;
+int grip_bit2 = 2;
 int grip_speed = 4;
 
 
@@ -212,10 +215,11 @@ void setup()
 
 void loop()
 {
+  
   if(Serial.available())
   {
     val = Serial.read();
-    Serial.println(tilt_angle);
+    //Serial.println(tilt_angle);
     switch(val)
     {
     case 0: stop_bot();  break;
@@ -227,7 +231,11 @@ void loop()
     case 6: tilt_down(); break;
     case 7: pan_left(); break;
     case 8: pan_right(); break;
-    }
+    case 9:  open_gripper(); break;
+    case 10: close_gripper(); break;
+    case 11: reset_arm(); break;
+    default: stop_bot(); break; 
+  }
   }
 }
 
