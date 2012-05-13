@@ -17,6 +17,8 @@ depth_test_compile.sh : it compiles the depth_lib_test.cpp
 cv_util.hpp: it contains opencv utilities
 img_assert.hpp: it contains code to assert equality of two images on [GTEST]
 
+arduino_code/arduino_code.ino : it contains the code which will be burned on the arduino of the robot
+
 Build instructions:
 -------------------
 install
