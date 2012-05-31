@@ -79,5 +79,14 @@ keypress(key)
 
 
 
+state machine:
+state 0: robot is stopped
+state 1: robot is started
+state 2: glass detected
+state 3: glass not detected
+state 4: near glass
+state 5: glass grabbed
+state 6: glass released
+state 7: done
 
 

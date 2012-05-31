@@ -1,0 +1,18 @@
+The servo motor is heated up when we synchronize them.
+looks like they have to apply some torque.
+the bot is not moving straight need to change the speed of the motors 
+so that it moves straight.
+need to record videos for different objects and then do the 
+testing on them.
+the left and right are very fast need to slow them down.
+idea:
+I will not use the raw depth information to adjust the farthreshold
+rather i will use the gray information to adjust the farthreshold
+
+We can store the raw depth data by using some fast compression algorithm.
+then that can be converted to point cloud as and when needed.
+
+the open and close gripper also has some problems need to see them also.
+they open and close are not properly synchronized.
+
+I can use wooden board and drill holes into it and fix the circuit on the board.

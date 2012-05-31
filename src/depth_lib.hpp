@@ -20,12 +20,13 @@ void make_structuring_element_b1(IplImage *se,const int &se_w,const int &se_h1,c
 	cvZero(se);
 	int img_w = se->width;
 	int img_h = se->height;
+	//cout<<"*"<<img_w<<","<<img_h<<endl;
 	int startj = (img_w - se_w)/2;	
 	int starti = se_h1;
 	fill_img_range(se,starti,img_h-se_h2,startj,startj+se_w,255);
 	starti = img_h-se_h2;
 	startj = 0;
-	fill_img_range(se,starti,img_w,startj,img_h,255);
+	fill_img_range(se,starti,img_h,startj,img_w,255);
 }
 
 void make_structuring_element_b2(IplImage *se2,const int &w,const int &h1,const int &h2)
@@ -91,6 +92,48 @@ void depth_threshold(IplImage *gray_img,const int &nearThreshold,const int &farT
             _gray_img[i][j] = 0;
         }
     }
+}
+
+int get_gray_depth(IplImage *gray_img,const int &x,const int &y)
+{
+	int sum=0,count=0;
+	BwImage _gray_img(gray_img);
+	for(int i = y; i<=y+10; i++ )
+	{
+		if(i>=0&&i<gray_img->height)
+		{
+			if(_gray_img[i][x]!=0)
+			{
+				sum+=(int)_gray_img[i][x];
+				count++;
+			}	
+		}
+	}
+	if(count==0)
+		return 0;
+	else
+		return (sum/count);
+}
+
+float get_depth_in_m(ofxKinect &kinect,const int &x,const int &y)
+{
+	//cout<<"get_depth_in_m\n";
+	float sum=0,count=0,val;
+	for(int i = y-5; i<=y+5;i++)
+	{
+		if(i>=0 && i<kinect.height)
+		{
+			val = kinect.getDistanceAt(x,i);
+			if(val>0)
+			{
+				sum += val;
+				count++;
+			}
+		}
+	}
+	if(count==0) return 0.0;
+	else return sum/count;
+	
 }
 
 

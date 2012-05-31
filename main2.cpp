@@ -1,4 +1,4 @@
-#include "depth_lib.hpp"
+#include "src/depth_lib.hpp"
 
 void show_img()
 {
@@ -14,7 +14,7 @@ void show_img()
 int main(int argc,char **argv)
 {
 //	show_img();
-	read_depth_video_file("depth_video");
+	read_depth_video_file("/home/ujjwal/of/apps/myapps/recordDepthVideo/bin/depth_videos/depth_video_1");
 	return 0;
 }
 

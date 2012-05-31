@@ -25,6 +25,8 @@ TEST(ErosionTest,TestingOnSmallSet0)
 		for(j=0;j<img->width;j++)
 			if(in[i][j]) _img[i][j]=255;
 	IplImage *se = cvCreateImage(cvSize(3,3),8,1);
+	cout<<"EROSION INPUT:\n";
+	print_img(img);
 	BwImage _se(se);
 	cvZero(se);
 	int searr[3][3] = { 
@@ -36,7 +38,8 @@ TEST(ErosionTest,TestingOnSmallSet0)
 		for(j=0;j<se->width;j++)
 			if(searr[i][j]) _se[i][j] = 255;
 
-	
+	cout<<"\nSTRUCTURING ELEMENT\n";
+	print_img(se);	
 	IplImage *out = get_clone(img);
 	erode(img,se,1,1,out);
 	BwImage _out(out);
@@ -46,6 +49,8 @@ TEST(ErosionTest,TestingOnSmallSet0)
 			   {0,0  ,255,0  ,0},
 			   {0,0  ,0  ,0  ,0},
 			   {0,0  ,0  ,0  ,0}};
+	cout<<"\nOUTPUT\n";
+	print_img(out);
 
 	for(i=0;i<out->height;i++)
 		for(j=0;j<out->width;j++)

@@ -8,6 +8,13 @@
 #define BACKWARD_SPEED 150
 #define LEFT_SPEED 150
 #define RIGHT_SPEED 150
+#define COMMAND_DELAY 90
+#define GRIPPER_OPEN_DELAY 200
+#define GRIPPER_CLOSE_DELAY 230
+#define GRIPPER_SPEED 255
+#define TURN_COMMAND_DELAY 35
+
+int delta = 28;
 
 int left_bit1 = 28;//22;
 int left_bit2 = 26;//24;
@@ -22,6 +29,7 @@ int grip_bit1 = 3;
 int grip_bit2 = 2;
 int grip_speed = 4;
 
+boolean gripper_open = false;
 
 
 Servo leftServo; // left servo motor
@@ -81,11 +89,28 @@ void stop_bot()
 
 void forward()
 {
-  left_motor_forward(FORWARD_SPEED);
+  left_motor_forward(FORWARD_SPEED+delta);
   right_motor_forward(FORWARD_SPEED);
+  delay(COMMAND_DELAY);
+  stop_bot();
 }
 
+void forward2()
+{
+  left_motor_forward(FORWARD_SPEED+delta);
+  right_motor_forward(FORWARD_SPEED);  
+}
+
+
 void backward()
+{
+  left_motor_backward(BACKWARD_SPEED);
+  right_motor_backward(BACKWARD_SPEED);
+  delay(COMMAND_DELAY);
+  stop_bot();
+}
+
+void backward2()
 {
   left_motor_backward(BACKWARD_SPEED);
   right_motor_backward(BACKWARD_SPEED);
@@ -95,13 +120,32 @@ void left()
 {
   left_motor_backward(LEFT_SPEED);
   right_motor_forward(LEFT_SPEED);
+  delay(TURN_COMMAND_DELAY);
+  stop_bot();
 }
+
+void left2()
+{
+  left_motor_backward(LEFT_SPEED);
+  right_motor_forward(LEFT_SPEED);
+}
+
+
 
 void right()
 {
   left_motor_forward(RIGHT_SPEED);
+  right_motor_backward(RIGHT_SPEED);
+  delay(TURN_COMMAND_DELAY);
+  stop_bot();  
+}
+
+void right2()
+{
+  left_motor_forward(RIGHT_SPEED);
   right_motor_backward(RIGHT_SPEED);  
 }
+
 
 //TODO 
 /*
@@ -111,18 +155,26 @@ left_90
  right_180
  */
 
-void open_gripper()
-{
-  gripper_motor_forward(100);
-  delay(500);
-  gripper_motor_forward(0);
-}
-
 void close_gripper()
 {
-  gripper_motor_backward(100);
-  delay(500);
+  if(gripper_open==true)
+  {
+  gripper_motor_forward(GRIPPER_SPEED);
+  delay(GRIPPER_CLOSE_DELAY);
   gripper_motor_forward(0);
+  gripper_open = false;
+  }
+}
+
+void open_gripper()
+{
+  if(gripper_open==false)
+  {
+  gripper_motor_backward(GRIPPER_SPEED);
+  delay(GRIPPER_OPEN_DELAY);
+  gripper_motor_forward(0);
+  gripper_open = true;
+  }
 }
 
 void tilt_up()
@@ -183,6 +235,7 @@ void reset_arm()
       delay(20);
     }
   }
+  else
   {
     for(;pan_angle<=90;pan_angle++)
     {
@@ -191,6 +244,37 @@ void reset_arm()
     }
   }
 }
+
+void set_tilt_angle(int angle)
+{
+    for(tilt_angle=34;tilt_angle<=angle;tilt_angle++)
+    {
+        leftServo.write(tilt_angle);
+        rightServo.write(180-tilt_angle);
+        delay(20);
+    }
+}
+
+void set_pan_angle(int angle)
+{
+  if(angle<90)
+  {
+    for(;pan_angle>=angle;pan_angle--)
+    {  
+      centerServo.write(pan_angle);
+      delay(20);
+    }
+  }
+  else
+  {
+    for(;pan_angle<=angle;pan_angle++)
+    {
+      centerServo.write(pan_angle);
+      delay(20);
+    }
+  }
+}
+
 
 
 void setup()
@@ -222,7 +306,13 @@ void loop()
   if(Serial.available())
   {
     val = Serial.read();
-    //Serial.println(tilt_angle);
+    Serial.println(val);
+    
+    if(val>30) 
+    {
+       set_pan_angle(val); 
+    }
+    
     switch(val)
     {
     case 0: stop_bot();  break;
@@ -237,6 +327,9 @@ void loop()
     case 9:  open_gripper(); break;
     case 10: close_gripper(); break;
     case 11: reset_arm(); break;
+    case 12: set_tilt_angle(100); break;
+    //case 12: delta++; break;
+    //case 13: delta--; break;
     default: stop_bot(); break; 
   }
   }
